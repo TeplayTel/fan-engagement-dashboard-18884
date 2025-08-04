@@ -6,10 +6,7 @@ from src.services.database_service import database_service
 router = APIRouter(tags=["websocket"])
 
 # PUBLIC_INTERFACE  
-@router.websocket("/ws/analytics", 
-    operation_id="websocket_analytics_connection",
-    summary="WebSocket Analytics Connection",
-    description="Real-time analytics and reactions WebSocket endpoint")
+@router.websocket("/ws/analytics")
 async def websocket_analytics_endpoint(websocket: WebSocket):
     """
     WebSocket endpoint for real-time analytics updates.
