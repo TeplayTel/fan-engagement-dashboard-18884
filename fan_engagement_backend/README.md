@@ -41,6 +41,7 @@ A FastAPI-based backend service for the Fan Engagement sports streaming applicat
 ### Prerequisites
 - Python 3.8+
 - pip (Python package manager)
+- PostgreSQL database (configured via environment variables)
 
 ### Quick Start
 
@@ -52,7 +53,7 @@ A FastAPI-based backend service for the Fan Engagement sports streaming applicat
 2. **Set Up Environment Variables**
    ```bash
    cp .env.example .env
-   # Edit .env file with your configuration
+   # Edit .env file with your database and server configuration
    ```
 
 3. **Start the Server**
@@ -60,10 +61,21 @@ A FastAPI-based backend service for the Fan Engagement sports streaming applicat
    python run.py
    ```
 
-4. **Access the API**
+4. **Verify Installation**
+   ```bash
+   python health_check.py
+   ```
+
+5. **Access the API**
    - API Server: http://localhost:8000
    - Documentation: http://localhost:8000/docs
    - WebSocket: ws://localhost:8000/ws/analytics
+
+### ✅ Fixed Issues (2025-08-04)
+- **WebSocket Route Error**: Fixed `TypeError: APIRouter.websocket() got an unexpected keyword argument 'operation_id'`
+- **Dependency Installation**: All required dependencies are properly installed and working
+- **Database Connection**: PostgreSQL connection and table creation working correctly
+- **API Endpoints**: All 14 REST endpoints verified and functional
 
 ### Development Mode
 
