@@ -5,7 +5,7 @@ from src.services.database_service import database_service
 
 router = APIRouter(tags=["websocket"])
 
-# PUBLIC_INTERFACE
+# PUBLIC_INTERFACE  
 @router.websocket("/ws/analytics")
 async def websocket_analytics_endpoint(websocket: WebSocket):
     """
