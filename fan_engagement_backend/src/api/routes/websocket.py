@@ -1,7 +1,7 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 import json
 from src.services.websocket_manager import connection_manager
-from src.services.mock_data import mock_data_service
+from src.services.database_service import database_service
 
 router = APIRouter(tags=["websocket"])
 
@@ -40,7 +40,7 @@ async def websocket_analytics_endpoint(websocket: WebSocket):
     
     try:
         # Send initial analytics data to the newly connected client
-        initial_analytics = mock_data_service.get_global_analytics()
+        initial_analytics = database_service.get_global_analytics()
         await connection_manager.send_personal_message(
             json.dumps({
                 "type": "initial_analytics",
@@ -65,7 +65,7 @@ async def websocket_analytics_endpoint(websocket: WebSocket):
                     )
                 elif message.get("type") == "request_analytics":
                     # Client requesting fresh analytics data
-                    current_analytics = mock_data_service.get_global_analytics()
+                    current_analytics = database_service.get_global_analytics()
                     await connection_manager.send_personal_message(
                         json.dumps({
                             "type": "analytics_update",

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Query, HTTPException
 from typing import List, Optional
 from datetime import datetime
 from src.models.schemas import Match, MatchStatus
-from src.services.mock_data import mock_data_service
+from src.services.database_service import database_service
 
 router = APIRouter(prefix="/matches", tags=["matches"])
 
@@ -37,7 +37,7 @@ async def get_matches(
     if date_to:
         filters["date_to"] = date_to
     
-    matches = mock_data_service.get_matches(filters)
+    matches = database_service.get_matches(filters)
     
     if limit:
         matches = matches[:limit]
@@ -59,7 +59,7 @@ async def get_match(match_id: int):
     Raises:
         HTTPException: 404 if match not found
     """
-    match = mock_data_service.get_match_by_id(match_id)
+    match = database_service.get_match_by_id(match_id)
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
     return match
@@ -73,7 +73,7 @@ async def get_live_matches():
     Returns:
         List of matches that are currently being played live
     """
-    return mock_data_service.get_matches({"status": MatchStatus.LIVE})
+    return database_service.get_matches({"status": MatchStatus.LIVE})
 
 # PUBLIC_INTERFACE
 @router.get("/upcoming/next", response_model=List[Match])
@@ -87,7 +87,7 @@ async def get_upcoming_matches(limit: int = Query(5, description="Number of upco
     Returns:
         List of upcoming matches sorted by start time
     """
-    upcoming_matches = mock_data_service.get_matches({"status": MatchStatus.UPCOMING})
+    upcoming_matches = database_service.get_matches({"status": MatchStatus.UPCOMING})
     # Sort by start time
     upcoming_matches.sort(key=lambda x: x.start_time)
     return upcoming_matches[:limit]

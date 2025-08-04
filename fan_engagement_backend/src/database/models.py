@@ -6,10 +6,10 @@ including relationships and constraints for the fan engagement system.
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Optional, List
 from sqlalchemy import (
-    Column, String, Integer, Float, Boolean, DateTime, Text, 
+    String, Integer, Float, Boolean, DateTime, Text, 
     ForeignKey, CheckConstraint, Index, UniqueConstraint
 )
 from sqlalchemy.dialects.postgresql import UUID

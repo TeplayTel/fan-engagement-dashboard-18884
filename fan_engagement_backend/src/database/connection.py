@@ -116,8 +116,9 @@ class DatabaseManager:
             bool: True if connection successful, False otherwise
         """
         try:
+            from sqlalchemy import text
             with self.engine.connect() as connection:
-                connection.execute("SELECT 1")
+                connection.execute(text("SELECT 1"))
                 logger.info("Database connection test successful")
                 return True
         except Exception as e:
@@ -232,11 +233,12 @@ def execute_raw_sql(sql: str, params: dict = None) -> list:
     WARNING: Use with caution to avoid SQL injection
     """
     try:
+        from sqlalchemy import text
         with DatabaseSession() as db:
             if params:
-                result = db.execute(sql, params)
+                result = db.execute(text(sql), params)
             else:
-                result = db.execute(sql)
+                result = db.execute(text(sql))
             return result.fetchall()
     except Exception as e:
         logger.error(f"Raw SQL execution failed: {e}")

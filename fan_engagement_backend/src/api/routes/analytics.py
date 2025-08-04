@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from src.models.schemas import MatchAnalytics, GlobalAnalytics
-from src.services.mock_data import mock_data_service
+from src.services.database_service import database_service
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
 
@@ -20,7 +20,7 @@ async def get_global_analytics():
     Returns:
         GlobalAnalytics object with comprehensive platform statistics
     """
-    return mock_data_service.get_global_analytics()
+    return database_service.get_global_analytics()
 
 # PUBLIC_INTERFACE
 @router.get("/match/{match_id}", response_model=MatchAnalytics)
@@ -44,11 +44,11 @@ async def get_match_analytics(match_id: int):
         HTTPException: 404 if match not found
     """
     # Check if match exists
-    match = mock_data_service.get_match_by_id(match_id)
+    match = database_service.get_match_by_id(match_id)
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
     
-    analytics = mock_data_service.get_match_analytics(match_id)
+    analytics = database_service.get_match_analytics(match_id)
     if not analytics:
         raise HTTPException(status_code=404, detail="Analytics not found for this match")
     
@@ -67,7 +67,7 @@ async def get_analytics_summary():
         Dictionary containing key metrics like total reactions, 
         active users, and current activity level
     """
-    global_analytics = mock_data_service.get_global_analytics()
+    global_analytics = database_service.get_global_analytics()
     
     return {
         "total_reactions": global_analytics.total_reactions,
